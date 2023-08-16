@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import static com.book.Member.command.domain.aggregate.vo.Role.ROLE_USER;
+
 @Controller
 public class MemberController {
     private final RealLoginService realLoginService;
@@ -48,16 +50,18 @@ public class MemberController {
         session.setAttribute("access_token", oauthToken.getAccess_token());
         session.setAttribute("id",jisu.getKakao_account().getEmail());
         session.setAttribute("nickname",jisu.getProperties().getNickname());
-
-        realLoginService.duplicate(jisu.getKakao_account().getEmail());
-        MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setMemberId(jisu.getId());
-        memberDTO.setMemberNickname(jisu.getProperties().getNickname());
-        memberDTO.setMemberEmail(jisu.getKakao_account().getEmail());
-        memberDTO.setIsDeleted("0");
-        realLoginService.saveRegister(memberDTO);
-
-        return "templates/index.html";
+        if (realLoginService.duplicate(jisu.getKakao_account().getEmail()) ==false) {
+            MemberDTO memberDTO = new MemberDTO();
+            memberDTO.setMemberId(jisu.getId());
+            memberDTO.setMemberNickname(jisu.getProperties().getNickname());
+            memberDTO.setMemberEmail(jisu.getKakao_account().getEmail());
+            memberDTO.setIsDeleted("0");
+            memberDTO.setPermission(ROLE_USER);
+            realLoginService.saveRegister(memberDTO);
+            return "templates/index.html";
+        }else{
+            return "templates/indeax.html";
+        }
 
     }
 

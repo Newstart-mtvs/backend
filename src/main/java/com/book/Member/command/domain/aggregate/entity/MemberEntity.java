@@ -1,5 +1,6 @@
 package com.book.Member.command.domain.aggregate.entity;
 
+import com.book.Member.command.domain.aggregate.vo.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,10 @@ public class MemberEntity {
 
     @Column(name = "IS_DELETED", columnDefinition = "varchar (2)", nullable = false)
     private String isDeleted;
+
+    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
+    private Role permission;
 
     public MemberEntity() {}
 

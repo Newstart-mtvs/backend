@@ -1,5 +1,6 @@
 package com.book.Member.command.application.dto;
 
+import com.book.Member.command.domain.aggregate.vo.Role;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -21,5 +22,6 @@ public class MemberDTO {
     private String joinDate;
 
     private String isDeleted;
+    private Role permission;
 
 }
