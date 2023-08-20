@@ -49,7 +49,7 @@ public class MemberEntity {
     @Column(name = "IS_DELETED", columnDefinition = "varchar (2)", nullable = false)
     private String isDeleted;
 
-    @Column(name = "state")
+    @Column(name = "permission")
     @Enumerated(EnumType.STRING)
     private Role permission;
 

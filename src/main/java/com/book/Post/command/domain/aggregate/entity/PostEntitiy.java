@@ -35,6 +35,9 @@ public class PostEntitiy {
     @Column(length = 30, nullable = false)
     private String author;
 
+    @Column(length = 100)
+    private String publisher;
+
     @Column(length = 100, nullable = false)
     private String title;
 
@@ -48,6 +51,8 @@ public class PostEntitiy {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
+    @Column(name = "IS_DELETED", columnDefinition = "varchar (2)", nullable = false)
+    private String isDeleted;
     public PostEntitiy() {
 
     }

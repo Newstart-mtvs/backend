@@ -58,9 +58,9 @@ public class MemberController {
             memberDTO.setIsDeleted("0");
             memberDTO.setPermission(ROLE_USER);
             realLoginService.saveRegister(memberDTO);
-            return "templates/index.html";
+            return "회원가입이 되었담";
         }else{
-            return "templates/indeax.html";
+            return "로그인이 되었담";
         }
 
     }

@@ -29,6 +29,7 @@ public class RealLoginService {
         member.setMemberNickname(memberdto.getMemberNickname());
         member.setMemberEmail(memberdto.getMemberEmail());
         member.setIsDeleted(memberdto.getIsDeleted());
+        member.setPermission(memberdto.getPermission());
         loginRepository.save(member);
         loginRepository.flush();
 
