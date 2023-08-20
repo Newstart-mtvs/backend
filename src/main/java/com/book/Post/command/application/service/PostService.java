@@ -49,5 +49,22 @@ public class PostService {
         return PostDTOList;
     }
 
+    @Transactional
+    public PostDTO getPost(Long id) {
+        PostEntitiy board = postRepository.findById(id).get();
+
+        PostDTO boardDto = PostDTO.builder()
+                .id(board.getId())
+                .author(board.getAuthor())
+                .publisher(board.getPublisher())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .joinDate(board.getJoinDate())
+                .modifiedDate(board.getModifiedDate())
+                .isdelete(board.getIsDeleted())
+                .build();
+        return boardDto;
+    }
+
 
 }

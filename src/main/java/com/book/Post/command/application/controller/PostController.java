@@ -4,12 +4,10 @@ import com.book.Post.command.application.dto.PostDTO;
 import com.book.Post.command.application.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/ebook")
@@ -33,14 +31,24 @@ public class PostController {
     }
 
     @GetMapping("/list")
-    public String list() {
-        return "board/list.html";
+    public String list(Model model) {
+        List<PostDTO> boardDtoList = postservice.getBoardList();
+        model.addAttribute("postList", boardDtoList);
+        return "list";
     }
 
     @GetMapping("/post")
     public String post() {
         return "post";
     }
+
+    @GetMapping("/post/{id}")
+    public String detail(@PathVariable("id") Long id, Model model) {
+        PostDTO boardDto = postservice.getPost(id);
+        model.addAttribute("post", boardDto);
+        return "detail.html";
+    }
+
 
 
     @PostMapping("/post")
