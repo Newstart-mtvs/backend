@@ -40,7 +40,7 @@ import java.util.Map;
 
 @Controller
 public class APIController {
-    private final String BASE_URL = "https://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=ttbhorry71729001&output=js&Query=aladin";
+    private final String BASE_URL = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=ttbhorry71729001&output=js&Query=aladin";
 
     private final RestTemplate restTemplate;
 
