@@ -1,6 +1,7 @@
 package com.book.Member.command.domain.aggregate.entity;
 
 import com.book.Member.command.domain.aggregate.vo.Role;
+import com.book.Post.command.domain.aggregate.entity.PostLikeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Getter
 @Setter
@@ -69,4 +71,11 @@ public class MemberEntity {
     public void setIsDeleted(String isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<PostLikeEntity> hearts;
 }

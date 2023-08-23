@@ -1,10 +1,7 @@
 package com.book.Post.command.domain.aggregate.entity;
 
 import com.book.Member.command.domain.aggregate.entity.MemberEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -25,6 +22,8 @@ import static javax.persistence.FetchType.LAZY;
         initialValue = 1,
         allocationSize = 50
 )
+@Builder
+
 public class PostLikeEntity {
     @Id
     @GeneratedValue(
@@ -33,14 +32,13 @@ public class PostLikeEntity {
     )
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "MEMBER_ID")
-    private MemberEntity memberid;
+    @Column(name = "campaign_id")
+    @NonNull
+    private String campaignId;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "MEMBER_IDA")
-    private PostEntitiy memberidpost;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private MemberEntity user;
 
     @CreatedDate
     @Column(name = "JOIN_DATE", nullable = false)

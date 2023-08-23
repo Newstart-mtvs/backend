@@ -18,11 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 @AllArgsConstructor
 @Builder
 public class PostLikeDTO {
-    private Long id;
+        private String campaignId;
+        private long userId;
 
-    private String memberid;
-
-    private Long memberidpost;
-
-    private String joinDate;
 }

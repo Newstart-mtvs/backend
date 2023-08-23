@@ -95,7 +95,6 @@ public class PostController {
     public String insert(@PathVariable("id") Long id, PostLikeDTO postLikeDTO, Model model) throws Exception {
         PostDTO boardDto = postservice.getPost(id);
         model.addAttribute("post", boardDto);
-        postLikeDTO.setMemberidpost(id);
         return "detail.html";
     }
 

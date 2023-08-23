@@ -1,8 +1,16 @@
 package com.book.Post.command.application.controller;
 
+import com.book.Post.command.application.dto.PostLikeDTO;
 import com.book.Post.command.application.service.PostLikeService;
+import com.book.Post.command.domain.aggregate.entity.PostLikeEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
 @Controller
 @RequestMapping("/ebook")
 public class PostLikeController {
@@ -13,5 +21,15 @@ public class PostLikeController {
         this.postlikeservice = postlikeservice;
     }
 
+    @GetMapping("/like/{id}")
+    public ResponseEntity<PostLikeDTO> heart(@PathVariable("id") Long id, HttpSession session) throws IOException {
+        String memberida = String.valueOf(session.getAttribute("memberid"));
+        PostLikeDTO heartDto = new PostLikeDTO();
+        heartDto.setCampaignId(String.valueOf(id));
+        System.out.println("Long.parseLong(memberida) = " + Long.parseLong(memberida));
+        heartDto.setUserId(Long.parseLong(memberida));
+        postlikeservice.heart(heartDto);
+        return new ResponseEntity<>(heartDto, HttpStatus.CREATED);
+    }
 
 }
