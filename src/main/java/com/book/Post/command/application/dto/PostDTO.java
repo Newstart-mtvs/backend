@@ -18,6 +18,7 @@ public class PostDTO {
     private String title;
     private String content;
     private String joinDate;
+    private String memberid;
     private String publisher;
     private LocalDateTime modifiedDate;
     private String isdelete;

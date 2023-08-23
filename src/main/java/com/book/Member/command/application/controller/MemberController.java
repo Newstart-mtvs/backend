@@ -49,6 +49,8 @@ public class MemberController {
         System.out.println(jisu.getKakao_account().getEmail());
         session.setAttribute("access_token", oauthToken.getAccess_token());
         session.setAttribute("id",jisu.getKakao_account().getEmail());
+        session.setAttribute("memberid",jisu.getId());
+
         session.setAttribute("nickname",jisu.getProperties().getNickname());
         if (realLoginService.duplicate(jisu.getKakao_account().getEmail()) ==false) {
             MemberDTO memberDTO = new MemberDTO();

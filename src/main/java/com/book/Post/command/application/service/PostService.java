@@ -1,6 +1,5 @@
 package com.book.Post.command.application.service;
 
-import com.book.Member.command.domain.aggregate.entity.MemberEntity;
 import com.book.Post.command.application.dto.PostDTO;
 import com.book.Post.command.domain.aggregate.entity.PostEntitiy;
 import com.book.Post.command.domain.repository.PostRepository;
@@ -24,9 +23,26 @@ public class PostService {
         posts.setTitle(postdto.getTitle());
         posts.setContent(postdto.getContent());
         posts.setAuthor(postdto.getAuthor());
+        posts.setMemberId(postdto.getMemberid());
         posts.setIsDeleted(postdto.getIsdelete());
         postRepository.save(posts);
         postRepository.flush();
+    }
+
+    @Transactional
+    public void saveeditPost(PostDTO postdto,Long id) {
+        PostEntitiy posts = postRepository.findById(id).get();
+        posts.setTitle(postdto.getTitle());
+        posts.setContent(postdto.getContent());
+        posts.setAuthor(postdto.getAuthor());
+        posts.setMemberId(postdto.getMemberid());
+        posts.setIsDeleted(postdto.getIsdelete());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        PostEntitiy posts = postRepository.findById(id).get();
+        posts.setIsDeleted("1");
     }
 
     @Transactional
@@ -44,7 +60,9 @@ public class PostService {
                     .modifiedDate(board.getModifiedDate())
                     .isdelete(board.getIsDeleted())
                     .build();
-            PostDTOList.add(boardDto);
+            if(Integer.parseInt(board.getIsDeleted()) == 0) {
+                PostDTOList.add(boardDto);
+            }
         }
         return PostDTOList;
     }

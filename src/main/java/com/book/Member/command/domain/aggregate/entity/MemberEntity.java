@@ -33,7 +33,7 @@ public class MemberEntity {
     @Column(name = "MEMBER_NUM")
     private int memberNum;
 
-    @Column(name = "MEMBER_ID", nullable = false)
+    @Column(name = "MEMBER_ID")
     private Long memberId;
 
     @Column(name = "MEMBER_NICKNAME", unique = true, nullable = false)
