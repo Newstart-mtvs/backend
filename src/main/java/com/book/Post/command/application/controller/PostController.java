@@ -96,7 +96,6 @@ public class PostController {
         PostDTO boardDto = postservice.getPost(id);
         model.addAttribute("post", boardDto);
         postLikeDTO.setMemberidpost(id);
-        postlikeservice.insert(postLikeDTO);
         return "detail.html";
     }
 
