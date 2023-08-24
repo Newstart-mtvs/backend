@@ -26,8 +26,6 @@ public class PostLikeService {
 
     public String heart(PostLikeDTO heartDto) throws IOException {
 
-        // 이미 좋아요 된 캠페인일 경우 409 에러
-
         if (postLikeRepository.existsByUserAndCampaignId(loginRepository.findByMemberId(heartDto.getUserId()), heartDto.getCampaignId())){
         return "exist";
         }

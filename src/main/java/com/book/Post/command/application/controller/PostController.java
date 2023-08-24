@@ -45,8 +45,8 @@ public class PostController {
         postdto.setId(id);
         postdto.setTitle(title);
         postdto.setContent(content);
-        postdto.setMemberid("65556565");
-        postdto.setAuthor("nickname");
+        postdto.setMemberid(memberida);
+        postdto.setAuthor(nickname);
         postdto.setIsdelete("0");
         System.out.println("memberida = " + memberida);
         postservice.saveeditPost(postdto,id);

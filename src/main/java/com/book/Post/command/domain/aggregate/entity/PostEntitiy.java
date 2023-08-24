@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 public class PostEntitiy {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.IDENTITY,
             generator = "POST_SEQ_GENERATOR"
     )
     @Column(name = "post_id")

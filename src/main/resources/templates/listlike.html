@@ -25,12 +25,11 @@
         <span th:text="${post.id}"></span>
       </th>
       <td>
-        <a th:href="@{'/ebook/post/' + ${post.id}}">
+        <a th:href="@{'/ebook/post/' + ${post.campaignId}}">
           <span th:text="${post.title}"></span>
         </a>
       </td>
       <td>
-        <span th:text="${post.author}"></span>
       </td>
       <td>
         <span th:text="${post.joinDate}"></span>

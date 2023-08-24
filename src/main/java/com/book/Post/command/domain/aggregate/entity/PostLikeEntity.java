@@ -16,18 +16,12 @@ import static javax.persistence.FetchType.LAZY;
 @ToString
 @Entity(name = "POSTLIKE")
 @Table(name = "POSTLIKE")
-@SequenceGenerator(
-        name = "POST_SEQLIKE_GENERATOR",
-        sequenceName = "SEQ_POSTLIKE_NUM",
-        initialValue = 1,
-        allocationSize = 50
-)
 @Builder
 
 public class PostLikeEntity {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.IDENTITY,
             generator = "POST_SEQLIKE_GENERATOR"
     )
     private Long id;

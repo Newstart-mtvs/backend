@@ -3,6 +3,7 @@ package com.book.Post.command.application.service;
 import com.book.Post.command.application.dto.PostDTO;
 import com.book.Post.command.domain.aggregate.entity.PostEntitiy;
 import com.book.Post.command.domain.repository.PostRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,7 +48,7 @@ public class PostService {
 
     @Transactional
     public List<PostDTO> getBoardList() {
-        List<PostEntitiy> PostList = postRepository.findAll();
+        List<PostEntitiy> PostList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         List<PostDTO> PostDTOList = new ArrayList<>();
         for(PostEntitiy board : PostList) {
             PostDTO boardDto = PostDTO.builder()

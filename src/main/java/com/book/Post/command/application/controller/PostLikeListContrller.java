@@ -24,9 +24,9 @@ public class PostLikeListContrller {
         String memberida = String.valueOf(session.getAttribute("memberid"));
         System.out.println("memberida = " + memberida);
         List<PostLikeDTO> boardDtoList = postLikeListService.getBoardList(Long.valueOf(memberida));
-        //model.addAttribute("postList", boardDtoList);
+        model.addAttribute("postList", boardDtoList);
         System.out.println("boardDtoList = " + boardDtoList);
-        return "list";
+        return "listlike";
     }
 
 }
