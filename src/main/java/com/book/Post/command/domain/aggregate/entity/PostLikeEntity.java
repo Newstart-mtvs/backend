@@ -40,6 +40,8 @@ public class PostLikeEntity {
     @JoinColumn(name = "user_id")
     private MemberEntity user;
 
+    private String title;
+
     @CreatedDate
     @Column(name = "JOIN_DATE", nullable = false)
     private String joinDate;

@@ -22,7 +22,7 @@ public class PostLikeController {
     }
 
     @GetMapping("/like/{id}")
-    public ResponseEntity<PostLikeDTO> heart(@PathVariable("id") Long id, HttpSession session) throws IOException {
+    public ResponseEntity<PostLikeDTO> heart(@PathVariable("id") Long id,HttpSession session) throws IOException {
         String memberida = String.valueOf(session.getAttribute("memberid"));
         PostLikeDTO heartDto = new PostLikeDTO();
         heartDto.setCampaignId(String.valueOf(id));

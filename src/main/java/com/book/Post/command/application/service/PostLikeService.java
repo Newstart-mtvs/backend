@@ -5,6 +5,7 @@ import com.book.Member.command.domain.repository.LoginRepository;
 import com.book.Post.command.application.dto.PostLikeDTO;
 import com.book.Post.command.domain.aggregate.entity.PostLikeEntity;
 import com.book.Post.command.domain.repository.PostLikeRepository;
+import com.book.Post.command.domain.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,10 +15,13 @@ public class PostLikeService {
     private MemberEntity user;
     private LoginRepository loginRepository;
     private PostLikeRepository postLikeRepository;
+    private PostRepository postRepository;
 
-    public PostLikeService(LoginRepository loginRepository, PostLikeRepository postLikeRepository) {
+
+    public PostLikeService(LoginRepository loginRepository, PostLikeRepository postLikeRepository, PostRepository postRepository, PostRepository postRepository1) {
         this.loginRepository = loginRepository;
         this.postLikeRepository = postLikeRepository;
+        this.postRepository = postRepository1;
     }
 
     public String heart(PostLikeDTO heartDto) throws IOException {
@@ -30,6 +34,7 @@ public class PostLikeService {
         PostLikeEntity heart = PostLikeEntity.builder()
                 .campaignId(heartDto.getCampaignId())
                 .user(loginRepository.findByMemberId(heartDto.getUserId()))
+                .title(postRepository.getById(Long.valueOf(heartDto.getCampaignId())).getTitle())
                 .build();
         postLikeRepository.save(heart);
         return "qwrwrqrrqw";

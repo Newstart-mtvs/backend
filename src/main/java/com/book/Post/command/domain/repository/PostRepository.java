@@ -10,5 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<PostEntitiy, Long> {
+    PostEntitiy findByTitle(long name);
+
 
 }

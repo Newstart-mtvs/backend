@@ -18,7 +18,9 @@ import static javax.persistence.FetchType.LAZY;
 @AllArgsConstructor
 @Builder
 public class PostLikeDTO {
+        private long id;
         private String campaignId;
         private long userId;
+        private String title;
 
 }
