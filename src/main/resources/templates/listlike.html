@@ -9,13 +9,18 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+<a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=9d672256fe1b571e038f23b57e69b78e&redirect_uri=http://localhost:8888/kakao/callback
+
+">카카오 눌러줘</a>
+<a href="https://kauth.kakao.com/oauth/logout?client_id=9d672256fe1b571e038f23b57e69b78e&logout_redirect_uri=http://localhost:8888">
+  로그아웃
+</a>
 <div class="container">
   <table class="table">
     <thead class="thead-light">
     <tr class="text-center">
       <th scope="col">#</th>
       <th scope="col">제목</th>
-      <th scope="col">작성자</th>
       <th scope="col">작성일</th>
     </tr>
     </thead>
@@ -28,8 +33,6 @@
         <a th:href="@{'/ebook/post/' + ${post.campaignId}}">
           <span th:text="${post.title}"></span>
         </a>
-      </td>
-      <td>
       </td>
       <td>
         <span th:text="${post.joinDate}"></span>

@@ -90,7 +90,7 @@ public class MemberController {
             session.removeAttribute("access_Token");
             session.removeAttribute("userId");
             session.invalidate();
-            return "https://kauth.kakao.com/oauth/logout?client_id=9d672256fe1b571e038f23b57e69b78e&logout_redirect_uri=http://localhost:8888";
+            return "https://kauth.kakao.com/oauth/logout?client_id=9d672256fe1b571e038f23b57e69b78e&logout_redirect_uri=http://localhost:8888/ebook/list";
 
         }else{
             //return "redirect:/";

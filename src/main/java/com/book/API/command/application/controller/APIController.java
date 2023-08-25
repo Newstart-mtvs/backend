@@ -1,52 +1,40 @@
 package com.book.API.command.application.controller;
 
-import com.book.API.command.application.dto.APIDTO;
-import com.book.API.command.infrastructure.service.RESTTEMPLATE;
-import com.nimbusds.jose.shaded.json.JSONArray;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import com.book.Post.command.application.dto.PostDTO;
+import com.book.Post.command.application.service.PostService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.minidev.json.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @Controller
 public class APIController {
-    private final String BASE_URL = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=ttbhorry71729001&output=js&Query=aladin";
+    String words = "알라딘";
+    private final String BASE_URL = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=ttbhorry71729001&output=js&Query="+words;
 
     private final RestTemplate restTemplate;
+    private final PostService postservice;
+
 
     @Autowired
-    public APIController(RestTemplate restTemplate) {
+    public APIController(RestTemplate restTemplate, PostService postservice) {
         this.restTemplate = restTemplate;
+        this.postservice = postservice;
     }
 
     @GetMapping("/listBook")
@@ -71,29 +59,59 @@ public class APIController {
     }
 
     @GetMapping("/listBook2") //왜 되는건지 알아보기 알라딘 api
-    public ResponseEntity<?> fetch() throws UnsupportedEncodingException {
+    public String fetch() throws UnsupportedEncodingException, JsonProcessingException, ParseException {
 
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
         RestTemplate restTemplate = new RestTemplate(httpRequestFactory);
         restTemplate.getInterceptors().add((request, body, execution) -> {
-            ClientHttpResponse response = execution.execute(request,body);
+            ClientHttpResponse response = execution.execute(request, body);
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             return response;
         });
         HttpEntity<?> entity = new HttpEntity<>(new HttpHeaders());
         ResponseEntity<Map> resultMap = restTemplate.exchange(BASE_URL, HttpMethod.GET, entity, Map.class);
-        System.out.println(resultMap.getBody());
-        System.out.println(resultMap.getStatusCode());
-        System.out.println(resultMap);
-        return resultMap;
+       // System.out.println(resultMap.getBody());
+       // System.out.println(resultMap.getStatusCode());
+       // System.out.println(resultMap);
+        ArrayList<Map<String, Object>> colors = (ArrayList<Map<String, Object>>) resultMap.getBody().get("item");
+      //  System.out.println("colors = " + colors);
+      //  System.out.println("colors.get = " + colors.get(1).get("title").toString());
+      //  System.out.println("colors = " + colors.size());
+        ObjectMapper mapper = new ObjectMapper();
+      //  System.out.println("hii = " + resultMap.getBody().get("item"));
 
+        String jsonInString;
+        jsonInString = mapper.writeValueAsString(resultMap.getBody().get("item"));
+        System.out.println("jsonInString = " + jsonInString);
+        int i;
+        // real
+        for (i=0;i<colors.size();i++){
+            System.out.println("colors.get = " + colors.get(i).get("title").toString());
+            System.out.println("colors.get = " + colors.get(i).get("link").toString());
+            System.out.println("colors.get = " + colors.get(i).get("description").toString());
+            System.out.println("colors.get = " + colors.get(i).get("cover").toString());
+
+            PostDTO postdto = new PostDTO();
+            postdto.setTitle(colors.get(i).get("title").toString());
+            postdto.setContent(colors.get(i).get("description").toString());
+            postdto.setMemberid("111111");
+            postdto.setAuthor(colors.get(i).get("author").toString());
+            postdto.setPublisher(colors.get(i).get("cover").toString());
+            postdto.setIsdelete("0");
+            postservice.savePost(postdto);
+        }
+
+        return "작성이 완료되었습니담";
 
     }
 
 
+
     @GetMapping("/listBook3")
     public String hello() {
-
+      //  JSONParser jsonParser = new JSONParser();
+      //  JSONObject jsonObject = (JSONObject) jsonParser.parse(resultMap.getBody().get("item").toString());
+      //  JSONArray track = (JSONArray) jsonObject.get("item");
         // uri 주소 생성
         URI uri = UriComponentsBuilder
                 .fromUriString(BASE_URL) //http://localhost에 호출

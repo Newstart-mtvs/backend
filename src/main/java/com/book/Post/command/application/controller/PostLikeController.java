@@ -22,14 +22,14 @@ public class PostLikeController {
     }
 
     @GetMapping("/like/{id}")
-    public ResponseEntity<PostLikeDTO> heart(@PathVariable("id") Long id,HttpSession session) throws IOException {
+    public String heart(@PathVariable("id") Long id,HttpSession session) throws IOException {
         String memberida = String.valueOf(session.getAttribute("memberid"));
         PostLikeDTO heartDto = new PostLikeDTO();
         heartDto.setCampaignId(String.valueOf(id));
         System.out.println("Long.parseLong(memberida) = " + Long.parseLong(memberida));
         heartDto.setUserId(Long.parseLong(memberida));
         postlikeservice.heart(heartDto);
-        return new ResponseEntity<>(heartDto, HttpStatus.CREATED);
+        return "redirect:/lister";
     }
 
 }

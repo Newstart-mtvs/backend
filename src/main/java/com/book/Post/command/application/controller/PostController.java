@@ -35,7 +35,7 @@ public class PostController {
         postdto.setMemberid(memberida);
         postdto.setIsdelete("0");
         postservice.savePost(postdto);
-        return "작성이 완료 되었습니담";
+        return "redirect:/ebook/list";
     }
     @PostMapping("/createposter/{id}")
     public String update(@PathVariable("id") Long id,@RequestParam String title, @RequestParam String content,HttpSession session) {
@@ -50,7 +50,7 @@ public class PostController {
         postdto.setIsdelete("0");
         System.out.println("memberida = " + memberida);
         postservice.saveeditPost(postdto,id);
-        return "redirect:/";
+        return "redirect:/ebook/list";
     }
 
     @PostMapping("/delete/{id}")
@@ -58,14 +58,14 @@ public class PostController {
         String memberida = String.valueOf(session.getAttribute("memberid"));
         String nickname = (String)session.getAttribute("nickname");
         postservice.delete(id);
-        return "redirect:/";
+        return "redirect:/ebook/list";
     }
 
     @GetMapping("/list")
     public String list(Model model) {
         List<PostDTO> boardDtoList = postservice.getBoardList();
         model.addAttribute("postList", boardDtoList);
-        return "list";
+        return "index";
     }
 
     @GetMapping("/post")
@@ -77,18 +77,18 @@ public class PostController {
     public String detail(@PathVariable("id") Long id, Model model) {
         PostDTO boardDto = postservice.getPost(id);
         model.addAttribute("post", boardDto);
-        return "detail.html";
+        return "detail";
     }
     @GetMapping("/post/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         PostDTO boardDto = postservice.getPost(id);
         model.addAttribute("post", boardDto);
-        return "edit.html";
+        return "edit";
     }
 
    @PostMapping("/post")
     public String detailview(PostDTO postdto) {
-        return "redirect:/";
+        return "redirect:/ebook/list";
     }
 
     @PostMapping("/post1/{id}")

@@ -25,6 +25,8 @@ public class PostService {
         posts.setContent(postdto.getContent());
         posts.setAuthor(postdto.getAuthor());
         posts.setMemberId(postdto.getMemberid());
+        posts.setPublisher(postdto.getPublisher());
+
         posts.setIsDeleted(postdto.getIsdelete());
         postRepository.save(posts);
         postRepository.flush();
