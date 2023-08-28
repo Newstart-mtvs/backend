@@ -22,6 +22,7 @@ public class PostLikeDTO {
         private String campaignId;
         private long userId;
         private String title;
+
         private String joinDate;
 
 

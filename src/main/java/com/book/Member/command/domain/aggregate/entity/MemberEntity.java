@@ -2,6 +2,7 @@ package com.book.Member.command.domain.aggregate.entity;
 
 import com.book.Member.command.domain.aggregate.vo.Role;
 import com.book.Post.command.domain.aggregate.entity.PostLikeEntity;
+import io.swagger.annotations.Info;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -78,4 +79,6 @@ public class MemberEntity {
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     private List<PostLikeEntity> hearts;
+
+
 }

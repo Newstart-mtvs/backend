@@ -101,7 +101,7 @@ public class APIController {
             postservice.savePost(postdto);
         }
 
-        return "작성이 완료되었습니담";
+        return jsonInString;
 
     }
 

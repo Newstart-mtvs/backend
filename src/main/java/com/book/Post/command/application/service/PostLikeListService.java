@@ -2,6 +2,7 @@ package com.book.Post.command.application.service;
 
 import com.book.Member.command.domain.aggregate.entity.MemberEntity;
 import com.book.Member.command.domain.repository.LoginRepository;
+import com.book.Member.command.infrastructure.repository.MemberRepository;
 import com.book.Post.command.application.dto.PostDTO;
 import com.book.Post.command.application.dto.PostLikeDTO;
 import com.book.Post.command.domain.aggregate.entity.PostEntitiy;
@@ -30,17 +31,21 @@ public class PostLikeListService {
     public List<PostLikeDTO> getBoardList(Long memberid) {
         List<PostLikeEntity> PostList = postLikeRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         List<PostLikeDTO> PostDTOList = new ArrayList<>();
+        int member = loginRepository.findByMemberId(memberid).getMemberNum();
+
         for(PostLikeEntity board : PostList) {
             PostLikeDTO boardDto = PostLikeDTO.builder()
                     .id(board.getId())
-                    .userId(memberid)
+                    .userId(board.getUser().getMemberNum())
                     .campaignId(board.getCampaignId())
                     .title(board.getTitle())
                     .joinDate(board.getJoinDate())
                     .build();
-            //if(Integer.parseInt(String.valueOf(board.getUser().getMemberId())) == memberid) {
+            if(board.getUser().getMemberNum() == member) {
                 PostDTOList.add(boardDto);
-           // }
+                System.out.println("board.getUser().getMemberId() = " + board.getUser().getMemberNum());
+                System.out.println("memberid = " + memberid);
+                }
         }
         return PostDTOList;
     }

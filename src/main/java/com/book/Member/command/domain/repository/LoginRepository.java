@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface LoginRepository extends JpaRepository<MemberEntity, Integer> {
     boolean existsByMemberEmail(String name);
     MemberEntity findByMemberId(long name);
+    MemberEntity findByMemberNum(int id);
 
 }

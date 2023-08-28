@@ -36,6 +36,7 @@ public class PostLikeEntity {
 
     private String title;
 
+
     @CreatedDate
     @Column(name = "JOIN_DATE", nullable = false)
     private String joinDate;
