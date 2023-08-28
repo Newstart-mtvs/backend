@@ -49,6 +49,7 @@ public class MemberController {
         System.out.println(jisu.getKakao_account().getEmail());
         session.setAttribute("access_token", oauthToken.getAccess_token());
         session.setAttribute("id",jisu.getKakao_account().getEmail());
+        session.setAttribute("memberid",jisu.getId());
         session.setAttribute("nickname",jisu.getProperties().getNickname());
         if (realLoginService.duplicate(jisu.getKakao_account().getEmail()) ==false) {
             MemberDTO memberDTO = new MemberDTO();
@@ -58,9 +59,9 @@ public class MemberController {
             memberDTO.setIsDeleted("0");
             memberDTO.setPermission(ROLE_USER);
             realLoginService.saveRegister(memberDTO);
-            return "templates/index.html";
+            return "회원가입이 되었담";
         }else{
-            return "templates/indeax.html";
+            return "로그인이 되었담";
         }
 
     }
@@ -89,7 +90,7 @@ public class MemberController {
             session.removeAttribute("access_Token");
             session.removeAttribute("userId");
             session.invalidate();
-            return "https://kauth.kakao.com/oauth/logout?client_id=9d672256fe1b571e038f23b57e69b78e&logout_redirect_uri=http://localhost:8888";
+            return "https://kauth.kakao.com/oauth/logout?client_id=9d672256fe1b571e038f23b57e69b78e&logout_redirect_uri=http://localhost:8888/ebook/list";
 
         }else{
             //return "redirect:/";

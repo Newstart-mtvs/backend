@@ -1,6 +1,8 @@
 package com.book.Member.command.domain.aggregate.entity;
 
 import com.book.Member.command.domain.aggregate.vo.Role;
+import com.book.Post.command.domain.aggregate.entity.PostLikeEntity;
+import io.swagger.annotations.Info;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +12,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,7 +36,7 @@ public class MemberEntity {
     @Column(name = "MEMBER_NUM")
     private int memberNum;
 
-    @Column(name = "MEMBER_ID", nullable = false)
+    @Column(name = "MEMBER_ID")
     private Long memberId;
 
     @Column(name = "MEMBER_NICKNAME", unique = true, nullable = false)
@@ -49,7 +52,7 @@ public class MemberEntity {
     @Column(name = "IS_DELETED", columnDefinition = "varchar (2)", nullable = false)
     private String isDeleted;
 
-    @Column(name = "state")
+    @Column(name = "permission")
     @Enumerated(EnumType.STRING)
     private Role permission;
 
@@ -69,4 +72,13 @@ public class MemberEntity {
     public void setIsDeleted(String isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<PostLikeEntity> hearts;
+
+
 }

@@ -18,28 +18,29 @@ import java.time.format.DateTimeFormatter;
 @ToString
 @Entity(name = "POST")
 @Table(name = "POST")
-@SequenceGenerator(
-        name = "POST_SEQ_GENERATOR",
-        sequenceName = "SEQ_POST_NUM",
-        initialValue = 1,
-        allocationSize = 50
-)
 public class PostEntitiy {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.IDENTITY,
             generator = "POST_SEQ_GENERATOR"
     )
+    @Column(name = "post_id")
     private Long id;
 
     @Column(length = 30, nullable = false)
     private String author;
+
+    @Column(length = 100)
+    private String publisher;
 
     @Column(length = 100, nullable = false)
     private String title;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
+
+    @Column(name = "MEMBER_IDA")
+    private String memberId;
 
     @CreatedDate
     @Column(name = "JOIN_DATE", nullable = false)
@@ -48,6 +49,8 @@ public class PostEntitiy {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
+    @Column(name = "IS_DELETED", columnDefinition = "varchar (2)", nullable = false)
+    private String isDeleted;
     public PostEntitiy() {
 
     }

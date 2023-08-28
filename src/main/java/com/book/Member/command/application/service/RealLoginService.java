@@ -29,20 +29,9 @@ public class RealLoginService {
         member.setMemberNickname(memberdto.getMemberNickname());
         member.setMemberEmail(memberdto.getMemberEmail());
         member.setIsDeleted(memberdto.getIsDeleted());
+        member.setPermission(memberdto.getPermission());
         loginRepository.save(member);
         loginRepository.flush();
-
-    }
-    @Transactional
-    public void deletereportId(String reportNo) {
-
-        try {
-            MemberEntity member = loginRepository.findById(reportNo)
-                    .orElseThrow(() -> new NotFoundException("존재하지 않은 넘버입니다."));
-        }
-        catch (NotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 
