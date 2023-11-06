@@ -24,8 +24,8 @@ import java.util.Map;
 
 @Controller
 public class APIController {
-    String words = "알라딘";
-    private final String BASE_URL = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=ttbhorry71729001&output=js&Query="+words;
+    String words = "gigig";
+    private final String BASE_URL = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=ttbhorry71729001&output=js&Query=aladin";
 
     private final RestTemplate restTemplate;
     private final PostService postservice;

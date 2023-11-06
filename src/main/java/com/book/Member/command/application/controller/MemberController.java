@@ -4,6 +4,7 @@ import com.book.Member.command.application.dto.MemberDTO;
 import com.book.Member.command.application.service.LoginService;
 import com.book.Member.command.application.dto.OauthTokenDTO;
 import com.book.Member.command.application.service.RealLoginService;
+import com.book.Post.command.application.dto.PostDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
 import org.springframework.stereotype.Controller;
@@ -11,9 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import java.lang.reflect.Member;
+import java.util.List;
 
 import static com.book.Member.command.domain.aggregate.vo.Role.ROLE_USER;
 

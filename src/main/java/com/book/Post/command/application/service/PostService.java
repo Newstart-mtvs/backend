@@ -71,6 +71,50 @@ public class PostService {
     }
 
     @Transactional
+    public List<PostDTO> getDeleteBoardList() {
+        List<PostEntitiy> PostList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        List<PostDTO> PostDTOList = new ArrayList<>();
+        for(PostEntitiy board : PostList) {
+            PostDTO boardDto = PostDTO.builder()
+                    .id(board.getId())
+                    .author(board.getAuthor())
+                    .publisher(board.getPublisher())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .joinDate(board.getJoinDate())
+                    .modifiedDate(board.getModifiedDate())
+                    .isdelete(board.getIsDeleted())
+                    .build();
+            if(Integer.parseInt(board.getIsDeleted()) == 1) {
+                PostDTOList.add(boardDto);
+            }
+        }
+        return PostDTOList;
+    }
+
+    @Transactional
+    public List<PostDTO> getImageBoardList() {
+        List<PostEntitiy> PostList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        List<PostDTO> PostDTOList = new ArrayList<>();
+        for(PostEntitiy board : PostList) {
+            PostDTO boardDto = PostDTO.builder()
+                    .id(board.getId())
+                    .author(board.getAuthor())
+                    .publisher(board.getPublisher())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .joinDate(board.getJoinDate())
+                    .modifiedDate(board.getModifiedDate())
+                    .isdelete(board.getIsDeleted())
+                    .build();
+            if(Integer.parseInt(board.getIsDeleted()) == 0) {
+                PostDTOList.add(boardDto);
+            }
+        }
+        return PostDTOList;
+    }
+
+    @Transactional
     public PostDTO getPost(Long id) {
         PostEntitiy board = postRepository.findById(id).get();
 
@@ -86,6 +130,7 @@ public class PostService {
                 .build();
         return boardDto;
     }
+
 
 
 }

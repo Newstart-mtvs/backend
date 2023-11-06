@@ -8,6 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
 <div class="container">
@@ -44,6 +45,167 @@
     </div>
   </div>
 </div>
+<form id="comment-form">
+  <input type="textarea" id="comment" placeholder="댓글을 입력하세요">
+  <input type="button" value="댓글 등록" onclick="createComment(8)">
+</form>
+
+<div id="comment-list">
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">댓글</th>
+      <th scope="col">작성자</th>
+      <th scope="col">작성일</th>
+      <th scope="col">작업</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${commentlist}">
+      <td th:text="${comment.id}"></td>
+      <td>
+        <a th:href="@{'/ebook/post/' + ${comment.id}}">
+          <span th:text="${comment.comment}"></span>
+        </a>
+      </td>
+      <td th:text="${comment.userid}"></td>
+      <td th:text="${post.joinDate}"></td>
+      <td>
+        <!-- 댓글 수정 버튼 -->
+        <button class="btn btn-sm btn-primary" onclick="editComment(${comment.id})">수정</button>
+        <!-- 댓글 삭제 버튼 -->
+        <button class="btn btn-sm btn-danger" onclick="deleteComment(${comment.id})">삭제</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<p id="boardId" th:text="${postid}"></p>
+
+<script>
+  // 댓글 등록
+  function createComment(ida) {
+    const comment = document.getElementById("comment").value;
+    const boardIdElement = document.getElementById("boardId");
+    const id = boardIdElement.textContent; // boardId 요소의 텍스트 값을 가져옵니다.
+    console.log(id);
+    console.log(comment);
+
+
+    // AJAX 또는 fetch를 사용하여 서버로 댓글 데이터를 전송
+    // 서버에서 댓글을 등록하고, 등록된 댓글을 받아와서 화면에 추가
+
+    // 예를 들어, fetch를 사용하는 경우:
+    fetch(`/post/${ida}/comment`, { // ${id}를 통해 동적으로 URL을 생성합니다.
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ comment })
+    })
+            .then(response => response.json())
+            .then(data => {
+              // 등록된 댓글을 화면에 추가
+              appendComment(data);
+            })
+            .catch(error => {
+              console.error('댓글 등록 에러:', error);
+            });
+  }
+
+
+
+  // 댓글 수정
+  function editComment(commentId) {
+    const editedComment = prompt('댓글을 수정하세요');
+
+    // AJAX 또는 fetch를 사용하여 서버로 수정된 댓글 데이터를 전송
+    // 서버에서 댓글을 수정하고, 수정된 댓글을 받아와서 화면에 반영
+
+    // 예를 들어, fetch를 사용하는 경우:
+    fetch(`/post/{id}/comment/${commentId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ comment: editedComment })
+    })
+            .then(response => response.json())
+            .then(data => {
+              // 수정된 댓글을 화면에 반영
+              updateComment(data);
+            })
+            .catch(error => {
+              console.error('댓글 수정 에러:', error);
+            });
+  }
+
+  // 댓글 삭제
+  function deleteComment(commentId) {
+    // 사용자로부터 삭제 확인을 받을 수도 있습니다.
+    const confirmDelete = confirm('댓글을 삭제하시겠습니까?');
+
+    if (confirmDelete) {
+      // AJAX 또는 fetch를 사용하여 서버로 댓글 삭제 요청을 전송
+      // 서버에서 댓글을 삭제하고, 화면에서 해당 댓글을 제거
+
+      // 예를 들어, fetch를 사용하는 경우:
+      fetch(`/post/{id}/comment/${commentId}`, {
+        method: 'DELETE'
+      })
+              .then(response => {
+                if (response.ok) {
+                  // 댓글이 성공적으로 삭제되었을 경우 화면에서도 제거
+                  removeComment(commentId);
+                } else {
+                  console.error('댓글 삭제 에러:', response.status);
+                }
+              })
+              .catch(error => {
+                console.error('댓글 삭제 에러:', error);
+              });
+    }
+  }
+
+  // 서버로부터 받은 댓글 데이터를 화면에 추가
+  function appendComment(commentData) {
+    const commentList = document.getElementById("comment-list");
+    const commentItem = document.createElement("div");
+    commentItem.innerHTML = `<p>${commentData.comment}</p>`;
+    commentItem.innerHTML += `<button onclick="editComment(${commentData.id})">수정</button>`;
+    commentItem.innerHTML += `<button onclick="deleteComment(${commentData.id})">삭제</button>`;
+    commentList.appendChild(commentItem);
+  }
+
+  // 수정된 댓글 데이터를 화면에 반영
+  function updateComment(commentData) {
+    // 수정된 댓글을 화면에서 찾아서 업데이트
+    const commentList = document.getElementById("comment-list");
+    const commentItems = commentList.querySelectorAll("div");
+    for (const commentItem of commentItems) {
+      if (commentItem.dataset.id === String(commentData.id)) {
+        commentItem.querySelector("p").textContent = commentData.comment;
+        break;
+      }
+    }
+  }
+
+  // 삭제된 댓글 데이터를 화면에서 제거
+  function removeComment(commentId) {
+    const commentList = document.getElementById("comment-list");
+    const commentItems = commentList.querySelectorAll("div");
+    for (const commentItem of commentItems) {
+      if (commentItem.dataset.id === String(commentId)) {
+        commentItem.remove();
+        break;
+      }
+    }
+  }
+
+</script>
+
 <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
