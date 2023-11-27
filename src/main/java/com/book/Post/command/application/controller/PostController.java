@@ -47,7 +47,7 @@ public class PostController {
         postdto.setMemberid(memberida);
         postdto.setIsdelete("0");
         postservice.savePost(postdto);
-        return "redirect:/ebook/list";
+        return "redirect:/board";
     }
 
     @Transactional
@@ -61,6 +61,17 @@ public class PostController {
         member.setPermission(memberdto.getPermission());
 
     }
+    @GetMapping("mypage")
+    public ModelAndView community(ModelAndView model ,HttpSession session){
+        String memberida = String.valueOf(session.getAttribute("memberid"));
+        String nickname = (String)session.getAttribute("nickname");
+        System.out.println("mypage");
+        model.addObject("post", memberida);
+
+        model.setViewName("mypage");
+        return model;
+    }
+
 
     @PostMapping("/createposter/{id}")
     public String update(@PathVariable("id") Long id,@RequestParam String title, @RequestParam String content,HttpSession session) {
@@ -75,7 +86,7 @@ public class PostController {
         postdto.setIsdelete("0");
         System.out.println("memberida = " + memberida);
         postservice.saveeditPost(postdto,id);
-        return "redirect:/ebook/list";
+        return "redirect:/board";
     }
 
     @PostMapping("/delete/{id}")
@@ -83,7 +94,7 @@ public class PostController {
         String memberida = String.valueOf(session.getAttribute("memberid"));
         String nickname = (String)session.getAttribute("nickname");
         postservice.delete(id);
-        return "redirect:/ebook/list";
+        return "redirect:/board";
     }
 
     @GetMapping("/list")
@@ -133,6 +144,7 @@ public class PostController {
         System.out.println(boardDtoList);
         return "detail";
     }
+
     @GetMapping("/post/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         PostDTO boardDto = postservice.getPost(id);

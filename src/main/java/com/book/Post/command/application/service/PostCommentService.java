@@ -38,7 +38,7 @@ public class PostCommentService {
                     .createdDate(board.getCreatedDate())
                     .build();
 
-            if (board.getPosts().getId() != id) {
+            if (board.getPosts().getId() == id) {
                 commentDTOList.add(boardDto);
             }
         }

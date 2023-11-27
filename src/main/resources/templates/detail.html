@@ -45,44 +45,44 @@
     </div>
   </div>
 </div>
-<form id="comment-form">
-  <input type="textarea" id="comment" placeholder="댓글을 입력하세요">
-  <input type="button" value="댓글 등록" onclick="createComment(8)">
-</form>
+<!--<form id="comment-form">-->
+<!--  <input type="textarea" id="comment" placeholder="댓글을 입력하세요">-->
+<!--  <input type="button" value="댓글 등록" onclick="createComment(8)">-->
+<!--</form>-->
 
-<div id="comment-list">
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">댓글</th>
-      <th scope="col">작성자</th>
-      <th scope="col">작성일</th>
-      <th scope="col">작업</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="comment : ${commentlist}">
-      <td th:text="${comment.id}"></td>
-      <td>
-        <a th:href="@{'/ebook/post/' + ${comment.id}}">
-          <span th:text="${comment.comment}"></span>
-        </a>
-      </td>
-      <td th:text="${comment.userid}"></td>
-      <td th:text="${post.joinDate}"></td>
-      <td>
-        <!-- 댓글 수정 버튼 -->
-        <button class="btn btn-sm btn-primary" onclick="editComment(${comment.id})">수정</button>
-        <!-- 댓글 삭제 버튼 -->
-        <button class="btn btn-sm btn-danger" onclick="deleteComment(${comment.id})">삭제</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+<!--<div id="comment-list">-->
+<!--  <table class="table">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--      <th scope="col">ID</th>-->
+<!--      <th scope="col">댓글</th>-->
+<!--      <th scope="col">작성자</th>-->
+<!--      <th scope="col">작성일</th>-->
+<!--      <th scope="col">작업</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr th:each="comment : ${commentlist}">-->
+<!--      <td th:text="${comment.id}"></td>-->
+<!--      <td>-->
+<!--        <a th:href="@{'/ebook/post/' + ${comment.id}}">-->
+<!--          <span th:text="${comment.comment}"></span>-->
+<!--        </a>-->
+<!--      </td>-->
+<!--      <td th:text="${comment.userid}"></td>-->
+<!--      <td th:text="${post.joinDate}"></td>-->
+<!--      <td>-->
+<!--        &lt;!&ndash; 댓글 수정 버튼 &ndash;&gt;-->
+<!--        <button class="btn btn-sm btn-primary" onclick="editComment(${comment.id})">수정</button>-->
+<!--        &lt;!&ndash; 댓글 삭제 버튼 &ndash;&gt;-->
+<!--        <button class="btn btn-sm btn-danger" onclick="deleteComment(${comment.id})">삭제</button>-->
+<!--      </td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--  </table>-->
+<!--</div>-->
 
-<p id="boardId" th:text="${postid}"></p>
+<!--<p id="boardId" th:text="${postid}"></p>-->
 
 <script>
   // 댓글 등록
