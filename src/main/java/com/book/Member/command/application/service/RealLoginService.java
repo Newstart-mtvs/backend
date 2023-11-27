@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RealLoginService {
@@ -38,6 +41,25 @@ public class RealLoginService {
     @Transactional
     public boolean duplicate(String reportNo) {
         return loginRepository.existsByMemberEmail(reportNo);
+
+    }
+
+    @Transactional
+    public List<MemberDTO> AdminRegisterlist() {
+
+
+        List<MemberEntity> reportlist = loginRepository.findAll();
+
+        List<MemberDTO> PostDTOList = new ArrayList<>();
+        for (MemberEntity board : reportlist) {
+            MemberDTO filer = MemberDTO.builder()
+                    .memberNum(board.getMemberNum())
+                    .memberNickname(board.getMemberNickname())
+                    .memberEmail(board.getMemberEmail())
+                    .build();
+            PostDTOList.add(filer);
+        }
+        return PostDTOList;
 
     }
 

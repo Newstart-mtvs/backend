@@ -1,14 +1,21 @@
 package com.book.Post.command.application.controller;
 
+import com.book.Member.command.application.dto.MemberDTO;
+import com.book.Member.command.application.service.RealLoginService;
+import com.book.Member.command.domain.aggregate.entity.MemberEntity;
+import com.book.Post.command.application.dto.PostCommentDTO;
 import com.book.Post.command.application.dto.PostDTO;
 import com.book.Post.command.application.dto.PostLikeDTO;
+import com.book.Post.command.application.service.PostCommentService;
 import com.book.Post.command.application.service.PostLikeService;
 import com.book.Post.command.application.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Controller
@@ -16,10 +23,15 @@ import java.util.List;
 public class PostController {
     private final PostService postservice;
     private final PostLikeService postlikeservice;
+    private final PostCommentService postCommentService;
+    private final RealLoginService realLoginService;
 
-    public PostController(PostService postservice, PostLikeService postlikeservice) {
+
+    public PostController(PostService postservice, PostLikeService postlikeservice, PostCommentService postCommentService, RealLoginService realLoginService) {
         this.postservice = postservice;
         this.postlikeservice = postlikeservice;
+        this.postCommentService = postCommentService;
+        this.realLoginService = realLoginService;
     }
 
     @PostMapping("createpost")
@@ -35,8 +47,32 @@ public class PostController {
         postdto.setMemberid(memberida);
         postdto.setIsdelete("0");
         postservice.savePost(postdto);
-        return "redirect:/ebook/list";
+        return "redirect:/board";
     }
+
+    @Transactional
+    public void saveRegister(MemberDTO memberdto) {
+
+        MemberEntity member = new MemberEntity();
+        member.setMemberId(memberdto.getMemberId());
+        member.setMemberNickname(memberdto.getMemberNickname());
+        member.setMemberEmail(memberdto.getMemberEmail());
+        member.setIsDeleted(memberdto.getIsDeleted());
+        member.setPermission(memberdto.getPermission());
+
+    }
+    @GetMapping("mypage")
+    public ModelAndView community(ModelAndView model ,HttpSession session){
+        String memberida = String.valueOf(session.getAttribute("memberid"));
+        String nickname = (String)session.getAttribute("nickname");
+        System.out.println("mypage");
+        model.addObject("post", memberida);
+
+        model.setViewName("mypage");
+        return model;
+    }
+
+
     @PostMapping("/createposter/{id}")
     public String update(@PathVariable("id") Long id,@RequestParam String title, @RequestParam String content,HttpSession session) {
         String memberida = String.valueOf(session.getAttribute("memberid"));
@@ -50,7 +86,7 @@ public class PostController {
         postdto.setIsdelete("0");
         System.out.println("memberida = " + memberida);
         postservice.saveeditPost(postdto,id);
-        return "redirect:/ebook/list";
+        return "redirect:/board";
     }
 
     @PostMapping("/delete/{id}")
@@ -58,7 +94,7 @@ public class PostController {
         String memberida = String.valueOf(session.getAttribute("memberid"));
         String nickname = (String)session.getAttribute("nickname");
         postservice.delete(id);
-        return "redirect:/ebook/list";
+        return "redirect:/board";
     }
 
     @GetMapping("/list")
@@ -67,6 +103,31 @@ public class PostController {
         model.addAttribute("postList", boardDtoList);
         return "index";
     }
+    @CrossOrigin("*")
+    @GetMapping("/imagelist")
+    public String Imagelist(Model model) {
+        List<PostDTO> boardDtoList = postservice.getImageBoardList();
+        model.addAttribute("postList", boardDtoList);
+        return "imagelist";
+    }
+
+    @GetMapping("/admin")
+    public ModelAndView adminlist(ModelAndView model) {
+        List<PostDTO> boardDtoList = postservice.getDeleteBoardList();
+        //List<MemberDTO> boardDtoLister = realLoginService.AdminRegisterlist();
+        model.addObject("postList", boardDtoList);
+        //model.addObject("postLister", boardDtoLister);
+        model.setViewName("admin");
+        return model;
+    }
+    @GetMapping("/useradmin")
+    public ModelAndView adminwritelist(ModelAndView model) {
+        List<MemberDTO> boardDtoLister = realLoginService.AdminRegisterlist();
+        model.addObject("postLister", boardDtoLister);
+        model.setViewName("useradmin");
+        return model;
+    }
+
 
     @GetMapping("/post")
     public String post() {
@@ -76,9 +137,14 @@ public class PostController {
     @GetMapping("/post/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         PostDTO boardDto = postservice.getPost(id);
+        List<PostCommentDTO> boardDtoList = postCommentService.getPostComments(id);
+        model.addAttribute("commentlist", boardDtoList);
         model.addAttribute("post", boardDto);
+        model.addAttribute("postid",id);
+        System.out.println(boardDtoList);
         return "detail";
     }
+
     @GetMapping("/post/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         PostDTO boardDto = postservice.getPost(id);

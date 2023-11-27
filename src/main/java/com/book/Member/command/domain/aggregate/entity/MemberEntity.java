@@ -10,6 +10,7 @@ import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.lang.reflect.Member;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -57,6 +58,10 @@ public class MemberEntity {
     private Role permission;
 
     public MemberEntity() {}
+
+    public MemberEntity(Long memberId) {
+        this.memberId = memberId;
+    }
 
     public int getMemberNum() {
         return memberNum;
